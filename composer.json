@@ -1,0 +1,19 @@
+{
+    "name": "nfservice/managersaas",
+    "description": "Biblioteca para comunicaçao com a API ManagerSaas da tecnospeed",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Diego Almeida",
+            "email": "diego.feres82@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "NFService\\ManagerSaas\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {}
+}
