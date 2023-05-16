@@ -29,7 +29,6 @@ class Tools
         'production' => false,
         'debug' => false,
         'upload' => false,
-        'decode' => false
     ];
 
     /**
@@ -108,19 +107,6 @@ class Tools
     }
 
     /**
-     * Define se a classe realizará o decode do retorno
-     *
-     * @param bool $decode Boleano para definir se fa decode ou não
-     *
-     * @access public
-     * @return void
-     */
-    public function setDecode(bool $decode) :void
-    {
-        $this->config['decode'] = $decode;
-    }
-
-    /**
      * Retorna se o ambiente setado é produção ou não
      *
      *
@@ -175,18 +161,6 @@ class Tools
     public function getUpload() : bool
     {
         return $this->config['upload'];
-    }
-
-    /**
-     * Recupera se faz decode ou não
-     *
-     *
-     * @access public
-     * @return bool
-     */
-    public function getDecode() : bool
-    {
-        return $this->config['decode'];
     }
 
     /**
@@ -574,6 +548,11 @@ class Tools
             'value' => $this->config['cnpj']
         ];
 
+        $params[] = [
+            'name' => 'encode',
+            'value' => 'true'
+        ];
+
         if (!empty($params)) {
             $paramsJoined = [];
 
@@ -596,7 +575,7 @@ class Tools
         }
         $retorno = curl_exec($curlC);
         $info = curl_getinfo($curlC);
-        $return["body"] = ($this->config['decode'] || !$this->config['decode'] && $info['http_code'] != '200') ? json_decode($retorno) : $retorno;
+        $return["body"] = $retorno;
         $return["httpCode"] = curl_getinfo($curlC, CURLINFO_HTTP_CODE);
         if ($this->config['debug']) {
             $return['info'] = curl_getinfo($curlC);
