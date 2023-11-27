@@ -341,6 +341,41 @@ class Tools
     }
 
     /**
+     * Realiza o resolveMDFe de um MDFe
+     *
+     * @param array $params Parametro para a requisição
+     * @param string $chave Chave da MDF-e
+     *
+     * @access public
+     * @return array
+     */
+    public function resolveMDFe(string $chave, array $params = [])
+    {
+        try {
+            $params = array_filter($params, function($item) {
+                return $item['name'] !== 'ChaveNota';
+            }, ARRAY_FILTER_USE_BOTH);
+
+            $params[] = [
+                'name' => 'ChaveNota',
+                'value' => $chave
+            ];
+
+            $dados = $this->post('mdfe/resolve', [], $params);
+
+            $result = explode(',', $dados['body']);
+
+            if ($result[0] != 'EXCEPTION') {
+                return $dados;
+            }
+
+            throw new \Exception($result[2], 1);
+        } catch (\Throwable $th) {
+            throw new \Exception($th->getMessage(), 1);
+        }
+    }
+
+    /**
      * Faz a busca do XML de um MDFe
      *
      * @param string $chave Chave do MDFe
